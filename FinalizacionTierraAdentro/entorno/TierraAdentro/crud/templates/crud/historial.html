@@ -1,0 +1,114 @@
+{% load humanize %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<style>
+  .table-nostriped tbody tr:nth-of-type(odd) {
+    background-color: transparent;
+  }
+</style>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Total</th>
+      <th scope="col">Fecha</th>
+      <th scope="col">Estado</th>
+      <th scope="col">Accion</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    {% for v in ventas %}
+    <tr>
+      <th scope="row">{{v.id}}</th>
+      <td>${{v.total|intcomma}}</td>
+      <td>{{v.hora}}</td>
+      <td>{{v.estado}}</td>
+
+      <td>
+        <a href="{% url 'ver_detalle' v.id %}" class="btn btn-sm btn-info btn-detalle">Detalle</a>
+        |
+        <a href="{% url 'borrar_registro' v.id %}" class="btn btn-sm btn-warning">Eliminar</a>
+      </td>
+
+    </tr>
+
+    <!-- tabla extendida -->
+
+    <tr>
+
+
+
+      {% for v.id in request.session.lista.items %}
+      {% if forloop.last %}
+
+
+
+      <td colspan="4">
+
+        <table class="table-sm">
+          {% if request.session.lista.items %}
+          {% for key, value in request.session.lista.items %}
+          <thead>
+
+
+            {% if value.id_venta == v.id %}
+            <!-- {% if forloop.first %} -->
+            <tr>
+
+
+
+              <th scope="col">Id</th>
+              <th scope="col">Producto</th>
+              <th scope="col">Cantidad</th>
+              <th scope="col">Precio</th>
+              <th scope="col">Accion</th>
+
+            </tr>
+            <!-- {% endif %} -->
+
+          </thead>
+          <tbody>
+
+
+            <tr>
+              <td scope="row">{{value.pro_id}}</th>
+              <td>{{value.nombre_producto}}</td>
+              <td>{{value.cantidad}}</td>
+              <td>{{value.precio}}</td>
+              <td><a href="{% url 'limpiar_lista' v.id %}" class="btn btn-outline-secondary">-</a></td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+          </tbody>
+        </table>
+      </td>
+
+      {% endif %} {% endfor %}
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+
+    {% endfor %}
+  </tbody>
+</table>
+
+<script type="text/javascript">
+
+
+</script>

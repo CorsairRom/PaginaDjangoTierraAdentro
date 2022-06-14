@@ -1,0 +1,247 @@
+{% extends 'crud/base.html' %}
+{% load static %}
+
+
+{% block contenido %}
+
+{% load crispy_forms_tags%}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+<style>
+    .ad{
+        border-radius: 0px;
+    }
+</style>
+
+
+<!-- Nav tabs -->
+<div class="container">
+    <div class="row d-flex justify-content-center">
+        <div class="col-12 col-lg-12 col-md-12 ll">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link ad {% if opcion == '0' %}active{% endif %}"  id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Perfil</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link ad {% if opcion == '1' %}active{% endif %} " id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Historial</a>
+                </li>
+                {% if user.is_superuser or cliente.vendedor %}
+                <li class="nav-item">
+                  <a class="nav-link ad {% if opcion == '2' %}active{% endif %} " id="messages-tab" data-toggle="tab" href="#messages" role="tab" aria-controls="messages" aria-selected="false">Lista de productos</a>
+                </li>
+                
+                <li class="nav-item">
+                  <a class="nav-link ad {% if opcion == '3' %}active{% endif %}" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="settings" aria-selected="false">Agregar Productos</a>
+                </li>
+                {% endif %}
+                {% if user.is_superuser %} 
+                <li class="nav-item">
+                  <a class="nav-link ad {% if opcion == '4' %}active{% endif %}" id="pedidos-tab" data-toggle="tab" href="#pedidos" role="tab" aria-controls="pedidos" aria-selected="false">Pedidos</a>
+                </li>
+                {% endif %}
+                
+            </ul>
+              
+              <!-- Tab panes -->
+            <div class="tab-content">
+
+                <!-- Inicio -->
+                <div class="tab-pane {% if opcion == '0' %}active{% endif %}" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="container">
+                        
+                        <h1 class="display-4 text-center">Bienvenid@, {{user.username}}</h1>
+                        
+                        <hr>
+                        
+                        
+                    </div>
+                    <div class="row">
+                      <div class="col-md-8 col-xs-12 col-12 offset-lg-2 offset-md-2">
+                        <div class="table-responsive">
+                          <table class="table table-sm">
+                              <h3 class="text-center display-6">Mis datos</h3>
+                              <thead>
+                                <tr>
+                                  <th scope="col">Nombre</th>
+                                  <th scope="col">Apellido</th>
+                                  <th scope="col">Direccion</th>
+                                  <th scope="col">Numero celular</th>
+                                  <th scope="col">Subscriptor</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td>{{cliente.nombre}}</td>
+                                  <td>{{cliente.apellido}}</td>
+                                  <td>{{cliente.direccion}}</td>
+                                  <td>{{cliente.n_celular}}</td>
+                                  <td> {% if cliente.subscriptor == False %} No {% else %} si {% endif %} </td>
+                                </tr>
+                                
+                              </tbody>
+                            </table>
+                            {% if cliente.vendedor or user.is_superuser%}
+
+                            {% else %}
+
+                            <div class="container ">
+                              <h2 class="text-center">Quieres hacerte vendedor?</h2>
+                              <div class="d-flex justify-content-center">
+                                <a href="{% url 'permiso' %}" class="btn btn-sm btn-success">Si+</a>
+                              </div>
+                            </div>
+
+                            {% endif %}
+                      </div>
+
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-6 col-md-6 col-lg-12">
+                        <h3>Acciones</h3>
+                        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                            <a href="{% url 'logout' %}"><button type="button" class="btn btn-danger mx-2">Cerrar Sesion</button></a>|
+                            <a href=""><button type="button" class="btn btn-info mx-2">Modificar Perfil</button></a>|
+                            <a href="{% url 'cambiarpass' %}"><button type="button" class="btn btn-warning mx-2">Cambiar Contraseña</button></a>
+                            {% comment %} <a href="{% url 'admin/' %}"><button type="button" class="btn btn-success mx-2">Ir Admin</button></a> {% endcomment %}
+                        </div>
+
+                      </div>
+                    </div>
+                </div>
+                <!-- FIN inicio -->
+
+                <!-- historial -->
+                <div class="tab-pane {% if opcion == '1' %}active{% endif %}" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    
+                    
+                      {% include 'crud/historial.html'  %}
+                </div>
+                <!-- FIN HISTORIAL -->
+
+
+                {% if user.is_superuser or cliente.vendedor %}
+                
+                
+                <!-- listar productos -->
+                <div class="tab-pane {% if opcion == '2' %}active{% endif %}" id="messages" role="tabpanel" aria-labelledby="messages-tab">
+                    <h1>
+                        {{msg}}
+                    </h1>
+                    <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Precio</th>
+                            <th scope="col">Categoria</th>
+                            <th scope="col">Accion</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            {% for p in productos %}
+                            {% comment %} nuevo {% endcomment %}
+                            {% if p.usuario_id == user.id %}
+                            
+                            
+                            <tr>
+                              <th scope="row">{{p.id}}</th>
+                              <td>{{p.nombre}}</td>
+                              <td>{{p.categoria}}</td>
+                              <td>{{p.precio}}</td>
+                              <td>
+                                  <a href="{% url 'modificar' p.id %}"><button class="btn btn-primary btn-sm"><i class="fa-solid fa-gear"></i></button></a>
+                                  <a href="{% url 'eliminar' p.id %}" ><button class="btn btn-danger btn-sm"><i class="fa-solid fa-trash-can"></i></button></a>
+                              </td>
+                            </tr>
+                            {% endif %} 
+                            {% comment %} nuevo {% endcomment %}
+                            {% endfor %}
+                            
+                        </tbody>
+                      </table>
+                </div>
+                <!-- Fin listar productos -->
+
+
+                <!-- tab agregar productos -->
+                <div class="tab-pane {% if opcion == '3' %}active{% endif %}" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+                    <div class="col-12 col-md-6 col-lg-6 d-flex justify-content-center offset-3">
+                        <div class="card bg-light ">
+                            <div class="card-body">
+                                <h1 class="display-6">Nuevo Producto</h1>
+                                <hr>
+                                <form action="" method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+    
+                                    {{form | crispy}}
+                                    <div class="d-flex justify-content-end">
+                                        <button type="reset" value="Cancelar" class="btn btn-secondary mx-2">Cancelar</button>
+                                        <button type="submit" value="Guardar" class="btn btn-primary  mx-2">Guardar</button>
+                                        
+                                    </div>
+                                </form>
+    
+                            </div>
+    
+                        </div>
+
+                    </div>
+                </div>
+                <!-- fin tab agregar productos -->
+                {% endif %}
+                {% if user.is_superuser %}
+                <!-- tab pedidos -->
+                <div class="tab-pane {% if opcion == '4' %}active{% endif %}" id="pedidos" role="tabpanel" aria-labelledby="pedidos-tab">
+                    <div class="col-12 col-md-12 col-lg-12 d-flex justify-content-center ">
+                        <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col">Id venta</th>
+                                <th scope="col">Fecha</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col">Accion</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                            {% for ventas in venta %}
+                                  
+                                
+                              <tr>
+                                <th scope="row">{{ventas.id}}</th>
+                                <td>{{ventas.fecha}}</td>
+                                <td>{{ventas.estado}}</td>
+                                <td>
+                                    <a href="{% url 'estadoPedido' ventas.id 0 %}" class="btn btn-sm btn-danger">En Proceso</a>
+                                    <a href="{% url 'estadoPedido' ventas.id 1 %}" class="btn btn-sm btn-warning">enviado</a>
+                                    <a href="{% url 'estadoPedido' ventas.id 2 %}" class="btn btn-sm btn-success">Entregado</a>
+                                </td>
+                              </tr>
+                            {% endfor %}
+                            </tbody>
+                          </table>
+    
+                    </div>
+                </div>
+                <!-- fin tab pedidos -->
+                {% endif %}
+            </div>
+
+
+        </div>
+    </div>
+
+
+</div>
+  
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> 
+{% endblock contenido %}

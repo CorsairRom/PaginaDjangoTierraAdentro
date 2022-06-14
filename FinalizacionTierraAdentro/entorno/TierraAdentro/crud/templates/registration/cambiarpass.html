@@ -1,0 +1,37 @@
+{% extends 'crud/base.html' %}
+{% load static %}
+
+
+{% block contenido %}
+
+{% load crispy_forms_tags%}
+
+
+<div class="container">
+        
+    <div class="row">
+        
+        <div class="col-12 col-md-6 offset-md-3 mt-3 border rounded shadow p-3">
+            <h3 class="text-center display-6">Cambiar Contraseña</h3>
+            <form action="" method="post">
+                {% csrf_token %}
+                {{form|crispy}}
+                <button type="submit" class="button btn btn-success"> Cambiar</button>
+            </form>
+            <br>
+            <a href="{% url 'perfil' 0 %}">
+                    <p class="text-muted">
+                        cancelar
+                    </p>
+                </a>
+
+
+        </div>
+        
+        <div class="col-lg-2"></div>
+    </div>
+</div>
+
+
+
+{% endblock contenido %}

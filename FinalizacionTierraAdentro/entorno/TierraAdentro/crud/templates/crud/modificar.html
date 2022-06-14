@@ -1,0 +1,32 @@
+{% extends 'crud/base.html' %}
+{% load static %}
+
+{% block contenido %}
+
+{% load crispy_forms_tags%}
+
+
+<div class="col-12 col-md-6 col-lg-6 d-flex justify-content-center offset-3">
+    <div class="card bg-light ">
+        <div class="card-body">
+            <h1 class="display-6">Nuevo Producto</h1>
+            <hr>
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                {{form | crispy}}
+                <div class="d-flex justify-content-end">
+                    <button type="reset" value="Cancelar" class="btn btn-secondary mx-2">Cancelar</button>
+                    <button type="submit" value="Guardar" class="btn btn-primary mx-2">Guardar</button>
+                    
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+{% endblock contenido %}

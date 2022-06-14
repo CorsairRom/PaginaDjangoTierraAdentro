@@ -1,0 +1,72 @@
+{% extends 'crud/base.html' %}
+{% load static %}
+
+{% block contenido %}
+
+<style>
+    .image{
+        height: 23rem;
+    }
+</style>
+
+
+<div class="container mt-3">
+    <ul class="breadcrumb  ">
+        <li class="breadcrumb-item active">Categoria</li>
+    </ul>
+</div>
+<div class="container   position-absolute top-25 start-50 translate-middle pb-4">
+    <h1 class="text-center  rounded display-6"> 
+        Categorias
+    </h1>
+</div>
+
+
+<div class="container margint60 page mt-4">
+    <div class="row row-cols-1 row-cols-md-2 g-4 my-4">
+        <div class="col">
+            <div class="card text-center shadow bg-white rounded">
+                <img class="card-img-top" src={% static 'crud/img/categoria/categoria_3.jpg' %} alt="Card image img-responsive" style="height:300px">
+                <div class="card-img-overlay position-absolute top-50 start-50 translate-middle">
+                    <h4 class="card-title bg-success rounded text-white">Flores</h4>
+                    <a href={% url 'flores' %} class="btn btn-success ">Mirar</a>
+                </div>
+                
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card text-center shadow   bg-white rounded">
+                <img class="card-img-top img-responsive" src={% static 'crud/img/categoria/categoria_1.jpg' %}  alt="Card image img-responsive" style="height:300px">
+                <div class="card-img-overlay position-absolute top-50 start-50 translate-middle">
+                    <h4 class="card-title bg-success rounded text-white">Arbustos</h4>
+                    <a href={% url 'arbustos' %} class="btn btn-success">Mirar</a>
+                </div>
+                
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card text-center shadow bg-white rounded" >
+                <img class="card-img-top" src={% static 'crud/img/categoria/categoria_2.jpg' %}  alt="Card image img-responsive" style="height:300px">
+                <div class="card-img-overlay position-absolute top-50 start-50 translate-middle">
+                    <h4 class="card-title bg-success rounded text-white">Maceteros</h4>
+                    <a href={% url 'maceteros' %} class="btn btn-success">Mirar</a>
+                </div>
+                
+            </div>
+        </div>
+        <div class="col">
+            <div class="card text-center shadow  bg-white rounded" >
+                <img class="card-img-top" src={% static 'crud/img/categoria/categoria_4.jpg' %} alt="Card image img-responsive" style="height:300px">
+                <div class="card-img-overlay position-absolute top-50 start-50 translate-middle ">
+                    <h4 class="card-title bg-success rounded text-white">Tierra de Hoja</h4>
+                    <a href={% url 'tierrahojas' %} class="btn btn-success">Mirar</a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock contenido %}

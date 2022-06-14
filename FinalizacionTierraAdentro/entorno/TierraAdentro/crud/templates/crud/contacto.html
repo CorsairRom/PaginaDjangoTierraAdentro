@@ -1,0 +1,104 @@
+{% extends 'crud/base.html' %}
+{% load static %}
+
+{% block contenido %}
+{% load crispy_forms_tags %}
+<style>
+  #map {
+    height: 400px;
+    /* The height is 400 pixels */
+    width: 100%;
+    /* The width is the width of the web page */
+}
+</style>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmJ8K_OLOXKu5_-wAsN2qDKin2Dq8E1fE&callback=initMap&libraries=&v=weekly" defer></script>
+<!--Section: Contact v.2-->
+<section class="mb-4">
+
+    <!--Section heading-->
+    <h2 class="h1-responsive font-weight-bold text-center my-4 text-success">Contactanos</h2>
+    <!--Section description-->
+    <p class="text-center w-responsive mx-auto mb-5">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Non
+      dolorum voluptatem ratione autem aliquam, dolore et? Eos, nostrum exercitationem quis molestiae earum, excepturi,
+      placeat libero atque dicta quae nihil ullam..</p>
+    <div class="container margint60 page">
+      <div class="row">
+
+        <!--Grid column-->
+        <div class="col-md-9 mb-md-0 mb-5">
+          <form  name="contact-form" action="" method="post">
+            {% csrf_token %}
+            <div class="row">
+              {{ form | crispy }}
+
+            </div>
+            <div class="float-start mt-4 text-md-left">
+              <button type="submit" class="button btn btn-primary"> Enviar</button>
+              
+            </div>
+
+          </form>
+
+          <div class="status"></div>
+        </div>
+        <!--Grid column-->
+
+        <!--Grid column-->
+        <div class="col-md-3 text-center">
+          <h2 class="text-center display-6">Encuentranos en:</h2>
+          <hr>
+          <ul class="list-unstyled mb-0 mt-2">
+            <li><i class="fas fa-map-marker-alt fa-2x"></i>
+              <p>Paicaví 3280, Concepción, Bío Bío</p>
+            </li>
+
+            <li><i class="fas fa-phone mt-4 fa-2x"></i>
+              <p>+ 56 (41) 226 8200</p>
+            </li>
+
+            <li><i class="fas fa-envelope mt-4 fa-2x"></i>
+              <p>contacto@duocuc.cl</p>
+            </li>
+          </ul>
+        </div>
+        <!--Grid column-->
+                <div class="continer">
+                <h1 class="text-center display-4 mb-4">¿Donde nos ubicamos?</h1>
+                <hr class="mb-4">
+                </div>
+                <script src="js/map.js"></script>
+                <!--The div element for the map -->
+                <div id="map"></div>
+      </div>
+    </div>
+  </section>
+  <!--Section: Contact v.2-->
+
+
+<script>
+  function initMap() {
+    // The location of Uluru
+    const uluru = { lat: -36.79472959690015, lng: -73.06278737670354 };
+    // The map, centered at Uluru
+    const map = new google.maps.Map(
+    document.getElementById("map") ,
+    
+    {
+        zoom: 16,
+        center: uluru,
+    }
+    );
+
+    // The marker, positioned at Uluru
+    const marker = new google.maps.Marker({
+    position: uluru,
+    map: map,
+    
+   
+    
+    });
+}
+</script>
+
+{% endblock contenido %}
+
